@@ -10,7 +10,6 @@
         .container { max-width: 1100px; margin: 0 auto; background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
         h1 { color: var(--primary); margin-top: 0; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         
-        /* Sekmeler */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; flex-wrap: wrap; }
         .tab-btn { background: #e2e8f0; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; color: #475569; transition: 0.2s; }
         .tab-btn.active { background: var(--accent); color: white; }
@@ -18,13 +17,11 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Form ve Kartlar */
         .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
         input, select, button { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
         button.btn-primary { background: var(--secondary); color: white; border: none; font-weight: bold; cursor: pointer; }
         button.btn-primary:hover { opacity: 0.9; }
 
-        /* Tablolar */
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
         th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
         th { background: #f1f5f9; color: #334155; }
@@ -36,7 +33,7 @@
         .makine-link { color: var(--accent); font-weight: bold; cursor: pointer; text-decoration: underline; }
         .makine-link:hover { color: #1d4ed8; }
 
-        /* Modal (Popup) Tasarımı */
+        /* Modal (Popup) */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 25px; border-radius: 10px; width: 400px; max-width: 90%; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
         .modal-header { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
@@ -50,17 +47,16 @@
     <div class="container">
         <h1>
             <span>🌲 Çam Kereste & Talaş Yönetim Sistemi</span>
-            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.4)</span>
+            <span style="font-size: 14px; color: #64748b;">Yerel Sürüm (v1.5)</span>
         </h1>
 
-        <!-- Sekme Butonları -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab(event, 'siparisler')">📦 Sipariş & Müşteri</button>
             <button class="tab-btn" onclick="switchTab(event, 'makineler')">⚙️ Makine Parkuru & Detay</button>
             <button class="tab-btn" onclick="switchTab(event, 'uretim')">🪵 Üretim & Fire</button>
         </div>
 
-        <!-- 1. SEKME: SİPARİŞLER -->
+        <!-- 1. SEKME -->
         <div id="siparisler" class="tab-content active">
             <h3>Yeni Sipariş Ekle</h3>
             <div class="form-group">
@@ -74,7 +70,6 @@
                 </select>
                 <button class="btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>
             </div>
-
             <h3>Mevcut Siparişler</h3>
             <table>
                 <thead>
@@ -90,15 +85,14 @@
             </table>
         </div>
 
-        <!-- 2. SEKME: MAKİNE PARKURU -->
+        <!-- 2. SEKME -->
         <div id="makineler" class="tab-content">
             <h3>Yeni Makine Ekle</h3>
             <div class="form-group" style="grid-template-columns: 1fr auto;">
-                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Çekiçli Kırıcı, Elek, Pres)">
+                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Kırıcı, Elek, Pres)">
                 <button class="btn-primary" onclick="makineEkle()">Makine Ekle</button>
             </div>
-
-            <p style="font-size: 13px; color: #64748b;">💡 <i>Teknik veri girişi, kapasite ve durum güncellemesi için aşağıdaki listeden makine isminin üzerine tıklayabilirsiniz.</i></p>
+            <p style="font-size: 13px; color: #64748b;">💡 <i>Teknik veri girişi ve durum güncellemesi için aşağıdaki listeden makine isminin üzerine tıklayın.</i></p>
 
             <div id="toplamKapasiteOzeti" style="background: #e8f4fd; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-weight: bold; color: #1e3a8a;">
                 Aktif Hat Toplam Kapasitesi: Hesapklanıyor...
@@ -118,7 +112,7 @@
             </table>
         </div>
 
-        <!-- 3. SEKME: ÜRETİM & FİRE -->
+        <!-- 3. SEKME -->
         <div id="uretim" class="tab-content">
             <h3>Günlük Üretim ve Fire Hesaplama</h3>
             <div class="form-group">
@@ -130,10 +124,9 @@
                 Henüz hesaplama yapılmadı. Giren odun ve çıkan talaş miktarını girip hesaplayın.
             </div>
         </div>
-
     </div>
 
-    <!-- POPUP MODAL (MAKİNE DETAY DÜZENLEME) -->
+    <!-- POPUP MODAL -->
     <div id="makineModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -173,7 +166,6 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // --- SİPARİŞLER ---
         let siparisler = JSON.parse(localStorage.getItem('telas_siparisler')) || [
             { musteri: "Yalova Çiftlik A.Ş.", urun: "Paketlenmiş İnce Talaş", miktar: 24, durum: "Üretimde" }
         ];
@@ -217,7 +209,6 @@
             siparisleriGoster();
         }
 
-        // --- MAKİNELER & POPUP DETAY ---
         let makineler = JSON.parse(localStorage.getItem('telas_makineler')) || [
             { ad: "Çekiçli Kırıcı (Ana Hat)", kapasite: 2500, enerji: 45, durum: "Aktif" },
             { ad: "Titreşimli Elek", kapasite: 3000, enerji: 12, durum: "Aktif" },
@@ -228,7 +219,6 @@
             const ad = document.getElementById('makineAdi').value;
             if(!ad) { alert("Lütfen makine adı giriniz."); return; }
 
-            // Varsayılan olarak "Aktif" ve boş teknik verilerle ekle
             makineler.push({ ad, kapasite: 0, enerji: 0, durum: "Aktif" });
             localStorage.setItem('telas_makineler', JSON.stringify(makineler));
             makineleriGoster();
@@ -301,7 +291,6 @@
             makineleriGoster();
         }
 
-        // --- ÜRETİM & FİRE ---
         function hesaplaUretim() {
             const giren = parseFloat(document.getElementById('girenKereste').value);
             const cikan = parseFloat(document.getElementById('cikanTalas').value);
