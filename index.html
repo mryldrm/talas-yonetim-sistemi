@@ -5,23 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talaş Üretim ve İşletme Yönetim Platformu</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .module-card { background: #e8f4fd; border-left: 5px solid #3498db; padding: 15px; margin-top: 15px; border-radius: 4px; }
-        .status { font-weight: bold; color: #27ae60; }
+        :root { --primary: #2c3e50; --secondary: #27ae60; --accent: #2980b9; --bg: #f4f6f9; --card-bg: #fff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h1 { color: var(--primary); margin-top: 0; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Sekmeler */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; flex-wrap: wrap; }
+        .tab-btn { background: #e2e8f0; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; color: #475569; transition: 0.2s; }
+        .tab-btn.active { background: var(--accent); color: white; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Form ve Kartlar */
+        .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        input, select, button { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        button.btn-primary { background: var(--secondary); color: white; border: none; font-weight: bold; cursor: pointer; }
+        button.btn-primary:hover { opacity: 0.9; }
+
+        /* Tablolar */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+        th { background: #f1f5f9; color: #334155; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-bekliyor { background: #fef3c7; color: #d97706; }
+        .badge-uretimde { background: #e0f2fe; color: #0284c7; }
+        .badge-tamamlandi { background: #dcfce7; color: #16a34a; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Talaş Üretim Yönetim Platformu</h1>
-        <p>İşletmenizin makine parkuru, üretim planlaması, sipariş ve maliyet analizlerini takip edeceğiniz dijital merkeze hoş geldiniz.</p>
-        
-        <div class="module-card">
-            <h3>Sistem Durumu</h3>
-            <p>Altyapı Durumu: <span class="status">Aktif ve Çalışıyor (GitHub Pages)</span></p>
-            <p>Sırradaki Adım: Modülleri (Makine, Sipariş, Maliyet) tasarlayıp eklemeye başlayacağız.</p>
+        <h1>
+            <span>🌲 Çam Kereste & Talaş Yönetim Sistemi</span>
+            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.1)</span>
+        </h1>
+
+        <!-- Sekme Butonları -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'siparisler')">📦 Sipariş & Müşteri</button>
+            <button class="tab-btn" onclick="switchTab(event, 'makineler')">⚙️ Makine Parkuru</button>
+            <button class="tab-btn" onclick="switchTab(event, 'uretim')">🪵 Üretim & Fire</button>
         </div>
+
+        <!-- 1. SEKME: SİPARİŞLER -->
+        <div id="siparisler" class="tab-content active">
+            <h3>Yeni Sipariş Ekle</h3>
+            <div class="form-group">
+                <input type="text" id="musteriAdi" placeholder="Müşteri / Firma Adı">
+                <input type="text" id="urunTipi" placeholder="Ürün (Örn: Çam Talaşı - Balya)">
+                <input type="number" id="miktarTon" placeholder="Miktar (Ton)">
+                <select id="siparisDurum">
+                    <option value="Bekliyor">Bekliyor</option>
+                    <option value="Üretimde">Üretimde</option>
+                    <option value="Tamamlandı">Tamamlandı</option>
+                </select>
+                <button class="btn-primary" onclick="siparisEkle()">Sipariş Ekle</button>
+            </div>
+
+            <h3>Mevcut Siparişler</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Müşteri</th>
+                        <th>Ürün Tipi</th>
+                        <th>Miktar (Ton)</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="siparisListesi">
+                    <!-- JavaScript ile dolacak -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 2. SEKME: MAKİNE PARKURU -->
+        <div id="makineler" class="tab-content">
+            <h3>Makine Durumları ve Bakım Takibi</h3>
+            <div class="form-group">
+                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Kırıcı, Elek, Pres)">
+                <select id="makineDurum">
+                    <option value="Aktif Çalışıyor">Aktif Çalışıyor</option>
+                    <option value="Bakımda">Bakımda</option>
+                    <option value="Arızalı">Arızalı</option>
+                </select>
+                <button class="btn-primary" onclick="makineEkle()">Makine Ekle / Güncelle</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Makine / Ekipman</th>
+                        <th>Durum</th>
+                        <th>Son Güncelleme</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="makineListesi">
+                    <!-- JavaScript ile dolacak -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. SEKME: ÜRETİM & FİRE -->
+        <div id="uretim" class="tab-content">
+            <h3>Günlük Üretim ve Fire Hesaplama</h3>
+            <div class="form-group">
+                <input type="number" id="girenKereste" placeholder="Giren Kereste / Odun (Ton)">
+                <input type="number" id="cikanTalas" placeholder="Üretilen Net Talaş (Ton)">
+                <button class="btn-primary" onclick="hesaplaUretim()">Fire Oranı Hesapla</button>
+            </div>
+            <div id="uretimSonuc" style="background: #f1f5f9; padding: 15px; border-radius: 6px; margin-top: 10px; font-weight: bold;">
+                Henüz hesaplama yapılmadı. Giren odun ve çıkan talaş miktarını girip hesaplayın.
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        function switchTab(evt, tabName) {
+            let contents = document.getElementsByClassName("tab-content");
+            for (let c of contents) c.classList.remove("active");
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let b of buttons) b.classList.remove("active");
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // --- SİPARİŞLER ---
+        let siparisler = JSON.parse(localStorage.getItem('telas_siparisler')) || [
+            { musteri: "Yalova Çiftlik A.Ş.", urun: "Paketlenmiş İnce Talaş", miktar: 24, durum: "Üretimde" }
+        ];
+
+        function siparisEkle() {
+            const musteri = document.getElementById('musteriAdi').value;
+            const urun = document.getElementById('urunTipi').value;
+            const miktar = document.getElementById('miktarTon').value;
+            const durum = document.getElementById('siparisDurum').value;
+
+            if(!musteri || !urun || !miktar) { alert("Lütfen tüm alanları doldurun."); return; }
+
+            siparisler.push({ musteri, urun, miktar, durum });
+            localStorage.setItem('telas_siparisler', JSON.stringify(siparisler));
+            siparisleriGoster();
+            
+            document.getElementById('musteriAdi').value = '';
+            document.getElementById('urunTipi').value = '';
+            document.getElementById('miktarTon').value = '';
+        }
+
+        function siparisleriGoster() {
+            const tbody = document.getElementById('siparisListesi');
+            tbody.innerHTML = '';
+            siparisler.forEach((s, index) => {
+                let badgeClass = s.durum === 'Bekliyor' ? 'badge-bekliyor' : (s.durum === 'Üretimde' ? 'badge-uretimde' : 'badge-tamamlandi');
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.musteri}</td>
+                        <td>${s.urun}</td>
+                        <td>${s.miktar} Ton</td>
+                        <td><span class="badge ${badgeClass}">${s.durum}</span></td>
+                        <td><button onclick="siparisSil(${index})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Sil</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function siparisSil(index) {
+            siparisler.splice(index, 1);
+            localStorage.setItem('telas_siparisler', JSON.stringify(siparisler));
+            siparisleriGoster();
+        }
+
+        // --- MAKİNELER ---
+        let makineler = JSON.parse(localStorage.getItem('telas_makineler')) || [
+            { ad: "Çekiçli Kırıcı (Ana Hat)", durum: "Aktif Çalışıyor", tarih: "Bugün" },
+            { ad: "Titreşimli Elek", durum: "Aktif Çalışıyor", tarih: "Dün" },
+            { ad: "Paketleme Presi", durum: "Bakımda", tarih: "Bakımda" }
+        ];
+
+        function makineEkle() {
+            const ad = document.getElementById('makineAdi').value;
+            const durum = document.getElementById('makineDurum').value;
+            if(!ad) { alert("Makine adı giriniz."); return; }
+
+            makineler.push({ ad, durum, tarih: new Date().toLocaleDateString() });
+            localStorage.setItem('telas_makineler', JSON.stringify(makineler));
+            makineleriGoster();
+            document.getElementById('makineAdi' ).value = '';
+        }
+
+        function makineleriGoster() {
+            const tbody = document.getElementById('makineListesi');
+            tbody.innerHTML = '';
+            makineler.forEach((m, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${m.ad}</td>
+                        <td><b>${m.durum}</b></td>
+                        <td>${m.tarih}</td>
+                        <td><button onclick="makineSil(${index})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Sil</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function makineSil(index) {
+            makineler.splice(index, 1);
+            localStorage.setItem('telas_makineler', JSON.stringify(makineler));
+            makineleriGoster();
+        }
+
+        // --- ÜRETİM & FİRE ---
+        function hesaplaUretim() {
+            const giren = parseFloat(document.getElementById('girenKereste').value);
+            const cikan = parseFloat(document.getElementById('cikanTalas').value);
+            const sonucDiv = document.getElementById('uretimSonuc');
+
+            if(isNaN(giren) || isNaN(cikan) || giren <= 0) {
+                sonucDiv.innerHTML = "Lütfen geçerli tonaj değerleri girin.";
+                return;
+            }
+
+            let fireMiktari = giren - cikan;
+            let fireYuzdesi = ((fireMiktari / giren) * 100).toFixed(2);
+
+            sonucDiv.innerHTML = `Giren Hammadde: ${giren} Ton | Elde Edilen Talaş: ${cikan} Ton <br>
+            🔥 Fire/Toz Kaybı: ${fireMiktari} Ton (%${fireYuzdesi}) <br>
+            <span style="color:var(--secondary)">Verim Oranı: %${(100 - fireYuzdesi).toFixed(2)}</span>`;
+        }
+
+        siparisleriGoster();
+        makineleriGoster();
+    </script>
 </body>
 </html>
