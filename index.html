@@ -39,7 +39,7 @@
     <div class="container">
         <h1>
             <span>🌲 Çam Kereste & Talaş Yönetim Sistemi</span>
-            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.2)</span>
+            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.3)</span>
         </h1>
 
         <!-- Sekme Butonları -->
@@ -85,8 +85,8 @@
         <div id="makineler" class="tab-content">
             <h3>Makine Ekle ve Saatlik Kapasite Tanımla</h3>
             <div class="form-group">
-                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Çekiçli Kırıcı)">
-                <input type="number" step="0.1" id="makineKapasite" placeholder="Saatlik Kapasite (Ton / Saat)">
+                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Kırıcı, Elek)">
+                <input type="number" step="0.1" id="makineKapasite" placeholder="Saatlik Kapasite (Ton/Saat)">
                 <select id="makineDurum">
                     <option value="Aktif Çalışıyor">Aktif Çalışıyor</option>
                     <option value="Bakımda">Bakımda</option>
@@ -215,7 +215,6 @@
             let toplamAktifKapasite = 0;
 
             makineler.forEach((m, index) => {
-                // Eğer makine aktif çalışıyorsa kapasiteyi toplama dahil et
                 if(m.durum === 'Aktif Çalışıyor') {
                     toplamAktifKapasite += parseFloat(m.kapasite || 0);
                 }
@@ -223,7 +222,7 @@
                 tbody.innerHTML += `
                     <tr>
                         <td>${m.ad}</td>
-                        <td><b>${m.kapasite} Ton / Saat</b></td>
+                        <td><b>${m.kapasite || 0} Ton / Saat</b></td>
                         <td><b>${m.durum}</b></td>
                         <td>${m.tarih}</td>
                         <td><button onclick="makineSil(${index})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Sil</button></td>
@@ -231,7 +230,6 @@
                 `;
             });
 
-            // Üstteki özet alanını güncelle (Günlük 8 ve 24 saatlik projeksiyonlar ekleyerek)
             let gunluk8Saat = (toplamAktifKapasite * 8).toFixed(1);
             let gunluk24Saat = (toplamAktifKapasite * 24).toFixed(1);
 
