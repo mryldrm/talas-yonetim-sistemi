@@ -265,7 +265,7 @@
 
             document.getElementById('toplamKapasiteOzeti').innerHTML = `
                 ⚡ Aktif Hat Saatlik Toplam Kapasite: ${toplamAktifKgSaat} Kg/S (${tonSaat} Ton/Saat) <br>
-                🕒 8 Saatlik Vardiya Potansiyeli: ${gunluk8SaatTon} Ton \vert{} 24 Saatlik Maksimum Potansiyel:${gunluk24SaatTon} Ton
+                🕒 8 Saatlik Vardiya Potansiyeli: ${gunluk8SaatTon} Ton | 24 Saatlik Maksimum Potansiyel: ${gunluk24SaatTon} Ton
             `;
         }
 
@@ -316,5 +316,12 @@
             let fireYuzdesi = ((fireMiktari / giren) * 100).toFixed(2);
 
             sonucDiv.innerHTML = `Giren Hammadde: ${giren} Ton | Elde Edilen Talaş: ${cikan} Ton <br>
-            🔥 Fire/Toz Kaybı: ${fireMiktari} Ton (\%${fireYuzdesi}) <br>
-            <span style="color:var
+            🔥 Fire/Toz Kaybı: ${fireMiktari} Ton (%${fireYuzdesi}) <br>
+            <span style="color:var(--secondary)">Verim Oranı: %${(100 - fireYuzdesi).toFixed(2)}</span>`;
+        }
+
+        siparisleriGoster();
+        makineleriGoster();
+    </script>
+</body>
+</html>
