@@ -8,7 +8,7 @@
         :root { --primary: #2c3e50; --secondary: #27ae60; --accent: #2980b9; --bg: #f4f6f9; --card-bg: #fff; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: #333; }
         .container { max-width: 1100px; margin: 0 auto; background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-        h1 { color: var(--primary); margin-top: 0; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { color: var(--primary); margin-top: 0; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         
         /* Sekmeler */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; flex-wrap: wrap; }
@@ -19,7 +19,7 @@
         .tab-content.active { display: block; }
 
         /* Form ve Kartlar */
-        .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .form-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
         input, select, button { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
         button.btn-primary { background: var(--secondary); color: white; border: none; font-weight: bold; cursor: pointer; }
         button.btn-primary:hover { opacity: 0.9; }
@@ -39,13 +39,13 @@
     <div class="container">
         <h1>
             <span>🌲 Çam Kereste & Talaş Yönetim Sistemi</span>
-            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.1)</span>
+            <span style="font-size: 14px; color: #64748b;">GitHub Canlı Geliştirme (v1.2)</span>
         </h1>
 
         <!-- Sekme Butonları -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab(event, 'siparisler')">📦 Sipariş & Müşteri</button>
-            <button class="tab-btn" onclick="switchTab(event, 'makineler')">⚙️ Makine Parkuru</button>
+            <button class="tab-btn" onclick="switchTab(event, 'makineler')">⚙️ Makine Parkuru & Kapasite</button>
             <button class="tab-btn" onclick="switchTab(event, 'uretim')">🪵 Üretim & Fire</button>
         </div>
 
@@ -81,22 +81,30 @@
             </table>
         </div>
 
-        <!-- 2. SEKME: MAKİNE PARKURU -->
+        <!-- 2. SEKME: MAKİNE PARKURU & KAPASİTE -->
         <div id="makineler" class="tab-content">
-            <h3>Makine Durumları ve Bakım Takibi</h3>
+            <h3>Makine Ekle ve Saatlik Kapasite Tanımla</h3>
             <div class="form-group">
-                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Kırıcı, Elek, Pres)">
+                <input type="text" id="makineAdi" placeholder="Makine Adı (Örn: Çekiçli Kırıcı)">
+                <input type="number" step="0.1" id="makineKapasite" placeholder="Saatlik Kapasite (Ton / Saat)">
                 <select id="makineDurum">
                     <option value="Aktif Çalışıyor">Aktif Çalışıyor</option>
                     <option value="Bakımda">Bakımda</option>
                     <option value="Arızalı">Arızalı</option>
                 </select>
-                <button class="btn-primary" onclick="makineEkle()">Makine Ekle / Güncelle</button>
+                <button class="btn-primary" onclick="makineEkle()">Makine Ekle</button>
             </div>
+
+            <h3>Parkur ve Toplam Kapasite Özeti</h3>
+            <div id="toplamKapasiteOzeti" style="background: #e8f4fd; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-weight: bold; color: #1e3a8a;">
+                Aktif Hat Toplam Kapasitesi: Hesapklanıyor...
+            </div>
+
             <table>
                 <thead>
                     <tr>
                         <th>Makine / Ekipman</th>
+                        <th>Saatlik Kapasite</th>
                         <th>Durum</th>
                         <th>Son Güncelleme</th>
                         <th>İşlem</th>
@@ -178,37 +186,59 @@
             siparisleriGoster();
         }
 
-        // --- MAKİNELER ---
+        // --- MAKİNELER & KAPASİTE ---
         let makineler = JSON.parse(localStorage.getItem('telas_makineler')) || [
-            { ad: "Çekiçli Kırıcı (Ana Hat)", durum: "Aktif Çalışıyor", tarih: "Bugün" },
-            { ad: "Titreşimli Elek", durum: "Aktif Çalışıyor", tarih: "Dün" },
-            { ad: "Paketleme Presi", durum: "Bakımda", tarih: "Bakımda" }
+            { ad: "Çekiçli Kırıcı (Ana Hat)", kapasite: 2.5, durum: "Aktif Çalışıyor", tarih: "Bugün" },
+            { ad: "Titreşimli Elek", kapasite: 3.0, durum: "Aktif Çalışıyor", tarih: "Bugün" },
+            { ad: "Paketleme Presi", kapasite: 1.8, durum: "Bakımda", tarih: "Bugün" }
         ];
 
         function makineEkle() {
             const ad = document.getElementById('makineAdi').value;
+            const kapasite = parseFloat(document.getElementById('makineKapasite').value) || 0;
             const durum = document.getElementById('makineDurum').value;
+            
             if(!ad) { alert("Makine adı giriniz."); return; }
 
-            makineler.push({ ad, durum, tarih: new Date().toLocaleDateString() });
+            makineler.push({ ad, kapasite, durum, tarih: new Date().toLocaleDateString() });
             localStorage.setItem('telas_makineler', JSON.stringify(makineler));
             makineleriGoster();
-            document.getElementById('makineAdi' ).value = '';
+            
+            document.getElementById('makineAdi').value = '';
+            document.getElementById('makineKapasite').value = '';
         }
 
         function makineleriGoster() {
             const tbody = document.getElementById('makineListesi');
             tbody.innerHTML = '';
+            
+            let toplamAktifKapasite = 0;
+
             makineler.forEach((m, index) => {
+                // Eğer makine aktif çalışıyorsa kapasiteyi toplama dahil et
+                if(m.durum === 'Aktif Çalışıyor') {
+                    toplamAktifKapasite += parseFloat(m.kapasite || 0);
+                }
+
                 tbody.innerHTML += `
                     <tr>
                         <td>${m.ad}</td>
+                        <td><b>${m.kapasite} Ton / Saat</b></td>
                         <td><b>${m.durum}</b></td>
                         <td>${m.tarih}</td>
                         <td><button onclick="makineSil(${index})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Sil</button></td>
                     </tr>
                 `;
             });
+
+            // Üstteki özet alanını güncelle (Günlük 8 ve 24 saatlik projeksiyonlar ekleyerek)
+            let gunluk8Saat = (toplamAktifKapasite * 8).toFixed(1);
+            let gunluk24Saat = (toplamAktifKapasite * 24).toFixed(1);
+
+            document.getElementById('toplamKapasiteOzeti').innerHTML = `
+                ⚡ Anlık Hat Saatlik Toplam Kapasite: ${toplamAktifKapasite.toFixed(1)} Ton/Saat <br>
+                🕒 8 Saatlik Vardiya Potansiyeli: ${gunluk8Saat} Ton | 24 Saatlik Maksimum Potansiyel: ${gunluk24Saat} Ton
+            `;
         }
 
         function makineSil(index) {
